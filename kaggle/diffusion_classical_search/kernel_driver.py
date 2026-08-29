@@ -368,6 +368,45 @@ def write_json(path: Path, payload: object) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def finalize_outputs() -> dict[str, object]:
+    """Create one portable result archive and remove bulky transient work trees."""
+    archive_path = Path(
+        shutil.make_archive(
+            str(WORKING / "dcs-artifacts"),
+            "zip",
+            root_dir=RESULTS.parent,
+            base_dir=RESULTS.name,
+        )
+    )
+    archive_sha = sha256(archive_path)
+    (WORKING / "dcs-artifacts.sha256").write_text(
+        f"{archive_sha}  {archive_path.name}\n", encoding="utf-8"
+    )
+    removed = []
+    for path in (
+        WORKING / "dcs-venv",
+        WORKING / ".uv-cache",
+        WORKING / "dcs-bundle",
+        WORKING / "dcs-assets",
+        WORKING / "dcs-run-work",
+        WORKING / "mujoco210-linux-x86_64.tar.gz",
+    ):
+        if path.is_dir():
+            shutil.rmtree(path)
+            removed.append(str(path))
+        elif path.is_file():
+            path.unlink()
+            removed.append(str(path))
+    payload = {
+        "archive": str(archive_path),
+        "archive_bytes": archive_path.stat().st_size,
+        "archive_sha256": archive_sha,
+        "removed_transient_paths": removed,
+    }
+    print("DCS_FINALIZE " + json.dumps(payload, sort_keys=True))
+    return payload
+
+
 def main() -> int:
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     mode = config["mode"]
@@ -514,6 +553,7 @@ def main() -> int:
             "harness_git_sha": bundle_manifest["harness"]["git_sha"],
         },
     )
+    finalize_outputs()
     return 0
 
 
