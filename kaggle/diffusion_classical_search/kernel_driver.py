@@ -130,12 +130,21 @@ def prepare_bundle() -> tuple[Path, Path, dict[str, object], dict[str, object]]:
         safe_extract_zip(asset_archive, assets)
         asset_mount_mode = "zip_archive_and_checkpoint_hashes"
     else:
-        expanded_models = asset_manifest_path.parent / "models_rl"
-        if not expanded_models.is_dir():
-            raise FileNotFoundError(
-                f"neither models_rl.zip nor expanded models_rl directory was mounted: {expanded_models}"
-            )
-        shutil.copytree(expanded_models, assets / "models_rl")
+        for record in asset_manifest["checkpoints"]:
+            relative = PurePosixPath(record["path"])
+            expected_parent = relative.parts[-2]
+            candidates = [
+                path
+                for path in asset_manifest_path.parent.rglob(relative.name)
+                if path.is_file() and path.parent.name == expected_parent
+            ]
+            if len(candidates) != 1:
+                raise FileNotFoundError(
+                    f"expected one expanded checkpoint {expected_parent}/{relative.name}, found {candidates}"
+                )
+            destination = assets.joinpath(*relative.parts)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(candidates[0], destination)
         asset_mount_mode = "kaggle_expanded_checkpoint_hashes"
     for record in asset_manifest["checkpoints"]:
         checkpoint = assets / record["path"]
