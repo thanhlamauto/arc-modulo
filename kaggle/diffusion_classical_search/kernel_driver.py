@@ -410,6 +410,8 @@ def finalize_outputs() -> dict[str, object]:
 def main() -> int:
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     mode = config["mode"]
+    job_status = "PASS"
+    exit_code = 0
     RESULTS.mkdir(parents=True, exist_ok=True)
     if mode == "canary":
         return run([sys.executable, str(Path(__file__).with_name("t4_canary.py"))], timeout=300)["returncode"]
@@ -538,7 +540,8 @@ def main() -> int:
         table = json.loads(table_path.read_text(encoding="utf-8"))
         status = table["tasks"][0]["status"]
         if status == "FAIL":
-            raise RuntimeError(f"scientific gate failed for {task}")
+            job_status = "FAIL"
+            exit_code = 1
     else:
         raise ValueError(f"unsupported mode: {mode}")
 
@@ -546,7 +549,7 @@ def main() -> int:
         RESULTS / "job_summary.json",
         {
             "schema_version": 1,
-            "status": "PASS",
+            "status": job_status,
             "mode": mode,
             "task": task,
             "source_git_sha": bundle_manifest["official_source"]["git_sha"],
@@ -554,7 +557,7 @@ def main() -> int:
         },
     )
     finalize_outputs()
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":
