@@ -64,10 +64,25 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def find_input(filename: str) -> Path:
+def find_input(filename: str, *, required: bool = True) -> Path | None:
     candidates = [path for path in INPUT.rglob(filename) if path.is_file()]
+    if not candidates and not required:
+        return None
     if len(candidates) != 1:
         raise FileNotFoundError(f"expected one {filename} under Kaggle input, found {candidates}")
+    return candidates[0]
+
+
+def find_expanded_root(required_paths: tuple[str, ...]) -> Path:
+    candidates = []
+    for manifest_path in INPUT.rglob("bundle_manifest.json"):
+        candidate = manifest_path.parent
+        if all((candidate / relative).exists() for relative in required_paths):
+            candidates.append(candidate)
+    if len(candidates) != 1:
+        raise FileNotFoundError(
+            f"expected one expanded source root containing {required_paths}, found {candidates}"
+        )
     return candidates[0]
 
 
@@ -90,24 +105,44 @@ def verify_bundle(root: Path) -> None:
 
 
 def prepare_bundle() -> tuple[Path, Path, dict[str, object], dict[str, object]]:
-    bundle_archive = find_input("source_bundle.zip")
-    asset_archive = find_input("models_rl.zip")
+    bundle_archive = find_input("source_bundle.zip", required=False)
+    asset_archive = find_input("models_rl.zip", required=False)
     asset_manifest_path = find_input("assets_manifest.json")
+    if asset_manifest_path is None:
+        raise FileNotFoundError("assets_manifest.json")
     root = WORKING / "dcs-bundle"
     assets = WORKING / "dcs-assets"
-    root.mkdir(parents=True, exist_ok=False)
-    assets.mkdir(parents=True, exist_ok=False)
-    safe_extract_zip(bundle_archive, root)
+    if bundle_archive is not None:
+        root.mkdir(parents=True, exist_ok=False)
+        safe_extract_zip(bundle_archive, root)
+        source_mount_mode = "zip"
+    else:
+        expanded_source = find_expanded_root(("official", "harness", "SHA256SUMS"))
+        shutil.copytree(expanded_source, root)
+        source_mount_mode = "kaggle_expanded"
     verify_bundle(root)
     bundle_manifest = json.loads((root / "bundle_manifest.json").read_text(encoding="utf-8"))
     asset_manifest = json.loads(asset_manifest_path.read_text(encoding="utf-8"))
-    if sha256(asset_archive) != asset_manifest["archive_sha256"]:
-        raise ValueError("official asset archive hash mismatch")
-    safe_extract_zip(asset_archive, assets)
+    assets.mkdir(parents=True, exist_ok=False)
+    if asset_archive is not None:
+        if sha256(asset_archive) != asset_manifest["archive_sha256"]:
+            raise ValueError("official asset archive hash mismatch")
+        safe_extract_zip(asset_archive, assets)
+        asset_mount_mode = "zip_archive_and_checkpoint_hashes"
+    else:
+        expanded_models = asset_manifest_path.parent / "models_rl"
+        if not expanded_models.is_dir():
+            raise FileNotFoundError(
+                f"neither models_rl.zip nor expanded models_rl directory was mounted: {expanded_models}"
+            )
+        shutil.copytree(expanded_models, assets / "models_rl")
+        asset_mount_mode = "kaggle_expanded_checkpoint_hashes"
     for record in asset_manifest["checkpoints"]:
         checkpoint = assets / record["path"]
         if checkpoint.stat().st_size != record["bytes"] or sha256(checkpoint) != record["sha256"]:
             raise ValueError(f"checkpoint verification failed: {record['path']}")
+    bundle_manifest["kaggle_source_mount_mode"] = source_mount_mode
+    asset_manifest["kaggle_asset_mount_mode"] = asset_mount_mode
     return root, assets, bundle_manifest, asset_manifest
 
 
