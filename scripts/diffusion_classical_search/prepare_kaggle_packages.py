@@ -89,6 +89,9 @@ def add_archive(target: zipfile.ZipFile, raw_archive: bytes, prefix: str, hashes
         for info in safe_members(source):
             if info.is_dir():
                 continue
+            pure = PurePosixPath(info.filename)
+            if "__pycache__" in pure.parts or pure.suffix == ".pyc":
+                continue
             data = source.read(info)
             name = f"{prefix}/{info.filename}"
             target.writestr(name, data)
@@ -137,6 +140,7 @@ def main() -> int:
         "environment_lock_sha256": sha256_file(lock_path),
         "canonical_manifest_sha256": sha256_file(canonical_manifest),
         "credential_packaging_policy": "git-archive allowlist only; kaggle.json impossible to include",
+        "excluded_tracked_cache_artifacts": "__pycache__ directories and .pyc files",
     }
     bundle_path = source_dir / "source_bundle.zip"
     hashes: dict[str, str] = {}
