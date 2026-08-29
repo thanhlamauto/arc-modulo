@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "acquisition": {
+    "source": "official repository locomotion/README.md",
+    "url": "https://drive.google.com/drive/folders/1snFcmcJaalcCWW9roBjeCjpWjpCeDM_P?usp=drive_link",
+    "folder": "CEP_checkpoint",
+    "archive_name": "models_rl.zip",
+    "archive_bytes": 142324858,
+    "archive_sha256": "237459cd1eca4501a269317ee8fd9b5cc832ecf96453f626bd1c84367f13c34d"
+  },
+  "extraction": {
+    "zip_entry_count": 48,
+    "path_traversal_check": "PASS",
+    "expected_table3_checkpoint_files": 18,
+    "expected_table3_checkpoint_files_found": 18,
+    "status": "PASS"
+  },
+  "first_task": {
+    "task": "halfcheetah-medium-expert-v2",
+    "directory": "models_rl/halfcheetah-medium-expert-v20large_actor",
+    "behavior": {
+      "name": "behavior_ckpt600.pth",
+      "bytes": 6556166,
+      "sha256": "a680b04912b755436aaa4fbb50419129acaf9e59d72996103b3586d94f08fe8e",
+      "strict_model_load": "PASS"
+    },
+    "critic": {
+      "name": "critic_ckpt100.pth",
+      "bytes": 3649146,
+      "sha256": "2ad203f7ba11a2f3172b09c9cf25dd8b60631b99ba751a71c257de8fb0180ace",
+      "required_keys_missing": [],
+      "ignored_ancillary_prefixes": ["vf.", "gaussian_policy."],
+      "official_strict_false_load": "PASS_WITH_IGNORED_ANCILLARY_KEYS"
+    }
+  }
+}

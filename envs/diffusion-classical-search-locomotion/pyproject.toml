@@ -1,0 +1,34 @@
+[project]
+name = "diffusion-classical-search-locomotion-repro"
+version = "0.0.0"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "click==8.1.7",
+  "cloudpickle==2.2.1",
+  "cython==0.29.37",
+  "d4rl @ git+https://github.com/Farama-Foundation/D4RL.git@89141a689b0353b0dac3da5cba60da4b1b16254d",
+  "diffusers==0.30.0",
+  "gym==0.23.1",
+  "h5py==3.11.0",
+  "mjrl @ git+https://github.com/aravindr93/mjrl.git@3871d93763d3b49c4741e6daeaebbc605fe140dc",
+  "mujoco-py==2.1.2.14",
+  "numpy==1.26.4",
+  "scikit-learn==1.5.2",
+  "scipy==1.14.1",
+  "setuptools==65.5.1",
+  "tensorboard==2.17.1",
+  "torch==2.4.0",
+  "tqdm==4.66.5",
+  "wheel==0.38.4",
+]
+
+[tool.uv]
+package = false
+
+[[tool.uv.index]]
+name = "pytorch-cu121"
+url = "https://download.pytorch.org/whl/cu121"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu121" }

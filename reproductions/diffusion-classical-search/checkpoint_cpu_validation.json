@@ -1,0 +1,34 @@
+{
+  "action_dim": 6,
+  "actor": {
+    "bytes": 6556166,
+    "key_count": 53,
+    "sha256": "a680b04912b755436aaa4fbb50419129acaf9e59d72996103b3586d94f08fe8e",
+    "strict_load": "PASS"
+  },
+  "critic": {
+    "bytes": 3649146,
+    "key_count": 57,
+    "missing_keys": [],
+    "sha256": "2ad203f7ba11a2f3172b09c9cf25dd8b60631b99ba751a71c257de8fb0180ace",
+    "unexpected_keys": [
+      "vf.v.0.weight",
+      "vf.v.0.bias",
+      "vf.v.2.weight",
+      "vf.v.2.bias",
+      "vf.v.4.weight",
+      "vf.v.4.bias",
+      "gaussian_policy.net.0.weight",
+      "gaussian_policy.net.0.bias",
+      "gaussian_policy.net.2.weight",
+      "gaussian_policy.net.2.bias",
+      "gaussian_policy.net.4.weight",
+      "gaussian_policy.net.4.bias"
+    ]
+  },
+  "model_class": "ScoreNet",
+  "schema_version": 1,
+  "state_dim": 17,
+  "status": "PASS",
+  "task": "halfcheetah-medium-expert-v2"
+}

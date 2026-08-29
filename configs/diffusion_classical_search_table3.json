@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "paper": {
+    "title": "Inference-time Scaling of Diffusion Models through Classical Search",
+    "arxiv": "2505.23614v2",
+    "url": "https://arxiv.org/abs/2505.23614v2"
+  },
+  "official_source": {
+    "url": "https://github.com/XiangchengZhang/Diffusion-inference-scaling.git",
+    "commit": "c158ab9eb058adb24ad0f8d48506ab837d7fae91",
+    "immutable": true
+  },
+  "scope": "locomotion_table_3",
+  "sampling_steps": 15,
+  "outer_seeds": [0, 1, 2, 3, 4],
+  "episodes_per_seed": 10,
+  "paper_locomotion_average": 86.1,
+  "normalization": {
+    "d4rl_native": "(raw_return - ref_min) / (ref_max - ref_min)",
+    "paper_scale": "100 * d4rl_native"
+  },
+  "fixed_search": {
+    "sigma": 0.0,
+    "eps_bsz": 1,
+    "rho_schedule": "increase",
+    "mu_schedule": "increase",
+    "sigma_schedule": "decrease",
+    "guidance_strength": 0.0
+  },
+  "first_gate_task": "halfcheetah-medium-expert-v2",
+  "gate_policy": {
+    "reproduced_max_absolute_delta": 1.0,
+    "close_max_absolute_delta": 3.0,
+    "proceed_statuses": ["REPRODUCED", "CLOSE"]
+  },
+  "tasks": {
+    "halfcheetah-medium-expert-v2": {
+      "particles": 4,
+      "n_recur": 1,
+      "n_iter": 1,
+      "rho": 0.008,
+      "mu": 0.02,
+      "target_mean": 93.9,
+      "target_spread": 0.3
+    },
+    "hopper-medium-expert-v2": {
+      "particles": 4,
+      "n_recur": 1,
+      "n_iter": 4,
+      "rho": 0.001,
+      "mu": 0.0,
+      "target_mean": 104.4,
+      "target_spread": 3.1
+    },
+    "walker2d-medium-expert-v2": {
+      "particles": 4,
+      "n_recur": 1,
+      "n_iter": 1,
+      "rho": 0.005,
+      "mu": 0.1,
+      "target_mean": 111.4,
+      "target_spread": 0.1
+    },
+    "halfcheetah-medium-v2": {
+      "particles": 4,
+      "n_recur": 1,
+      "n_iter": 4,
+      "rho": 0.003,
+      "mu": 0.05,
+      "target_mean": 54.8,
+      "target_spread": 0.1
+    },
+    "hopper-medium-v2": {
+      "particles": 4,
+      "n_recur": 4,
+      "n_iter": 4,
+      "rho": 0.003,
+      "mu": 0.02,
+      "target_mean": 99.5,
+      "target_spread": 1.7
+    },
+    "walker2d-medium-v2": {
+      "particles": 4,
+      "n_recur": 1,
+      "n_iter": 6,
+      "rho": 0.003,
+      "mu": 0.08,
+      "target_mean": 86.5,
+      "target_spread": 0.2
+    },
+    "halfcheetah-medium-replay-v2": {
+      "particles": 2,
+      "n_recur": 1,
+      "n_iter": 6,
+      "rho": 0.005,
+      "mu": 0.03,
+      "target_mean": 47.8,
+      "target_spread": 0.4
+    },
+    "hopper-medium-replay-v2": {
+      "particles": 2,
+      "n_recur": 1,
+      "n_iter": 1,
+      "rho": 0.003,
+      "mu": 0.2,
+      "target_mean": 97.4,
+      "target_spread": 4.0
+    },
+    "walker2d-medium-replay-v2": {
+      "particles": 2,
+      "n_recur": 2,
+      "n_iter": 4,
+      "rho": 0.003,
+      "mu": 0.03,
+      "target_mean": 79.3,
+      "target_spread": 9.7
+    }
+  }
+}
