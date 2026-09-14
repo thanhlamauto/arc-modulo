@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "experiment_id": "diffusion-classical-search-t2i-table12-tpu",
+  "paper": {
+    "title": "Inference-time Scaling of Diffusion Models through Classical Search",
+    "arxiv": "2505.23614v2",
+    "tables": [1, 2]
+  },
+  "official_source": {
+    "repository": "https://github.com/XiangchengZhang/Diffusion-inference-scaling.git",
+    "commit": "c158ab9eb058adb24ad0f8d48506ab837d7fae91",
+    "immutable": true
+  },
+  "benchmark": {
+    "relative_path": "text_to_image/prompt_files/benchmark_ir.json",
+    "count": 100,
+    "sha256": "e12ca8423c7978f00b0bf2af2832e9458c8c1149b9e7b45bac965f57b0300c8a",
+    "bytes": 14559,
+    "line_endings": "LF",
+    "windows_worktree_equivalent_sha256": "a72cd87e8a7609efb9b193bd1d5d3a2a08cc4d84578751029145998309cf0427"
+  },
+  "runtime": {
+    "num_inference_steps": 100,
+    "eta": 1.0,
+    "base_temperature": 10.0,
+    "resampling_steps": [20, 40, 80],
+    "final_step_policy": "evaluate_all_particles_then_first_index_argmax",
+    "accelerator": "TPU",
+    "tpu_type": "v5p-8",
+    "tpu_topology": "4 addressable PJRT devices; one independent trial per process/device",
+    "paper_execution_dtype": "float16",
+    "tpu_execution_dtype": "bfloat16",
+    "dtype_backend_deviation": "TPU v5p FP16 canary produced non-finite/black outputs; BF16 is the native TPU execution dtype.",
+    "torch": "2.4.0+cpu",
+    "torch_xla": "2.4.0",
+    "diffusers_commit": "af28ae2d5ba0ef80d99fff7859ebea730e1cf3f8",
+    "image_reward_commit": "2ca71bac4ed86b922fe53ddaec3109fe94d45fd3",
+    "guidance_reward": "ImageReward"
+  },
+  "trials": {
+    "seeds": [42, 43, 44, 45],
+    "seed_set_reconstructed": true,
+    "reason": "The paper specifies four trials, while the committed launcher exposes only 42, 43, and 44. Seed 45 is the minimal consecutive reconstruction.",
+    "per_prompt_seed_policy": "SeedSequence([trial_seed, prompt_index]); common random numbers across configurations",
+    "per_prompt_seed_policy_reconstructed": true
+  },
+  "models": {
+    "sd15": {
+      "id": "runwayml/stable-diffusion-v1-5",
+      "revision": "451f4fe16113bff5a5d2269ed5ad43b0592e9a14",
+      "source_dtype": "float32",
+      "execution_dtype": "bfloat16"
+    },
+    "sdxl": {
+      "id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "revision": "462165984030d82259a11f4367a4eed129e94a7b",
+      "source_dtype": "float16",
+      "execution_dtype": "bfloat16",
+      "variant": "fp16",
+      "use_safetensors": true,
+      "backend_deviation": "Load the official fp16 artifact directly instead of loading FP32 weights and casting to fp16; required by TPU VM root-disk capacity."
+    }
+  },
+  "gamma_search": [0.008, 0.024],
+  "methods": {
+    "bon": {"use_smc": false},
+    "fk": {"use_smc": true, "tempering": "constant", "scoring": "max", "resampling": "multinomial"},
+    "das": {"use_smc": true, "tempering": "increase", "scoring": "difference", "resampling": "ssp", "gamma_search": true},
+    "treeg": {"use_smc": true, "tempering": "constant", "scoring": "current", "resampling": "treeg", "branch_out": 2},
+    "svdd": {"use_smc": true, "tempering": "inf", "scoring": "current", "resampling": "deterministic_top"},
+    "bfs": {"use_smc": true, "tempering": "increase", "scoring": "max", "resampling": "ssp", "gamma_search": true}
+  },
+  "table1": {
+    "model": "sd15",
+    "budgets": [4, 8],
+    "cells": {
+      "BoN": "bon",
+      "Multinomial": "fk",
+      "SSP": "constant_max_ssp",
+      "Current": "constant_current_ssp",
+      "Difference": "constant_difference_ssp",
+      "Max": "constant_max_ssp",
+      "Increase": "bfs",
+      "Inf": "inf_max",
+      "Constant": "constant_max_ssp"
+    },
+    "targets": {
+      "4": {"BoN": [0.702, 0.057], "Multinomial": [0.743, 0.037], "SSP": [0.834, 0.041], "Current": [0.812, 0.037], "Difference": [0.823, 0.036], "Max": [0.834, 0.041], "Increase": [0.882, 0.029], "Inf": [0.667, 0.076], "Constant": [0.834, 0.041]},
+      "8": {"BoN": [0.896, 0.031], "Multinomial": [0.926, 0.042], "SSP": [1.032, 0.035], "Current": [0.996, 0.029], "Difference": [1.013, 0.032], "Max": [1.032, 0.035], "Increase": [1.087, 0.031], "Inf": [0.775, 0.087], "Constant": [1.032, 0.035]}
+    }
+  },
+  "table2": {
+    "models": ["sd15", "sdxl"],
+    "budgets": [4, 8],
+    "methods": ["bon", "fk", "das", "treeg", "svdd", "bfs"],
+    "targets": {
+      "sd15": {
+        "4": {"bon": [0.702, 0.057], "fk": [0.743, 0.037], "das": [0.878, 0.028], "treeg": [0.860, 0.033], "svdd": [0.667, 0.076], "bfs": [0.882, 0.029]},
+        "8": {"bon": [0.896, 0.031], "fk": [0.926, 0.042], "das": [1.052, 0.033], "treeg": [1.023, 0.018], "svdd": [0.775, 0.087], "bfs": [1.087, 0.031]}
+      },
+      "sdxl": {
+        "4": {"bon": [1.085, 0.013], "fk": [1.131, 0.022], "das": [1.181, 0.023], "treeg": [1.152, 0.023], "svdd": [1.036, 0.062], "bfs": [1.194, 0.024]},
+        "8": {"bon": [1.198, 0.021], "fk": [1.251, 0.011], "das": [1.265, 0.019], "treeg": [1.261, 0.021], "svdd": [1.225, 0.027], "bfs": [1.291, 0.018]}
+      }
+    }
+  },
+  "result_reuse": {
+    "table2.sd15.bon": "table1.resampling.BoN",
+    "table2.sd15.fk": "table1.resampling.Multinomial",
+    "table2.sd15.bfs": "table1.tempering.Increase",
+    "note": "SVDD is not reused because Table 1 Inf uses Max scoring while Table 2 SVDD uses Current scoring."
+  },
+  "explicit_exclusions": ["Locomotion", "PointMaze", "ImageNet", "Figure 3"]
+}

@@ -1,5 +1,10 @@
 # T2I search experiment runner
 
+Xem [hướng dẫn end-to-end](../../T2I_REPRODUCE.md) và
+[kết quả đã chạy](../../T2I_RESULTS.md). Với một baseline/cache đã hoàn thành,
+`bootstrap.py` sẽ kiểm tra asset hashes và chuẩn bị provenance inputs trước khi
+chạy CLI bên dưới.
+
 Đây là entrypoint gọn cho thí nghiệm Classical Search BFS vs Soft VASR. Nó chỉ
 điều phối; implementation khoa học đã audit trong `soft_vasr_t2i/` và
 `diffusion_classical_search_t2i/` được giữ nguyên để các artifact cũ vẫn có thể
