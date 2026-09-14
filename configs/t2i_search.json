@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "backend": "soft_vasr_v1",
+  "protocol": "soft_vasr_t2i.json",
+  "paths": {
+    "run_root": "/home/nguyenngocminh2005bn/soft-vasr-t2i-20260905",
+    "official_root": "/home/nguyenngocminh2005bn/dcs-table12-repro-20260903/official",
+    "baseline_results": "/home/nguyenngocminh2005bn/dcs-table12-repro-20260903/results/table12-tpu-20260903",
+    "cache_root": "/dev/shm/soft-vasr-t2i-20260905/cache"
+  },
+  "runtime": {
+    "tpu_chip": "2",
+    "torch_threads": 16,
+    "offline": true
+  }
+}

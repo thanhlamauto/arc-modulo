@@ -1,0 +1,25 @@
+# TPU VM environment for the Table 1/Table 2 reproduction.
+# torch/torchvision are installed from the CPU wheel index; torch_xla uses the
+# matching Google TPU VM wheel. Git commits are intentionally immutable.
+torch==2.4.0+cpu
+torchvision==0.19.0+cpu
+torch_xla==2.4.0
+libtpu-nightly==0.1.dev20240612+default
+numpy==1.26.3
+scipy==1.13.1
+numba==0.60.0
+transformers==4.38.2
+tokenizers==0.15.2
+accelerate==1.2.1
+huggingface-hub==0.27.1
+safetensors==0.5.2
+sentencepiece==0.2.0
+fairscale==0.4.13
+timm==1.0.12
+pillow==11.1.0
+protobuf==3.20.3
+ftfy==6.3.1
+einops==0.8.0
+tqdm==4.66.4
+diffusers @ git+https://github.com/huggingface/diffusers.git@af28ae2d5ba0ef80d99fff7859ebea730e1cf3f8
+image-reward @ git+https://github.com/THUDM/ImageReward.git@2ca71bac4ed86b922fe53ddaec3109fe94d45fd3
