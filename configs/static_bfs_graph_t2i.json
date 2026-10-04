@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "protocol_version": "STATIC_BFS_GRAPH_V1",
+  "rng_protocol": "GRAPH_EXPERIMENT_RNG_PROTOCOL",
+  "model": "sd15",
+  "particles": 4,
+  "steps": 100,
+  "eta": 1.0,
+  "execution_dtype": "bfloat16",
+  "scoring": "max",
+  "resampling": "ssp",
+  "verifier": "ImageReward-v1.0",
+  "split_seed": "static-bfs-graph-split-v1",
+  "split_counts": {"train": 60, "validation": 20, "test": 20},
+  "tiny": {
+    "candidate_steps": [20, 40, 60, 80],
+    "taus": [2.0, 8.0, 32.0],
+    "reference_tau": 8.0,
+    "train_prompts": 2,
+    "seeds": [42, 43, 44, 45],
+    "k_values": [2, 3],
+    "random_path_count": 8,
+    "random_seed": 20260929
+  },
+  "pilot": {
+    "candidate_steps": [10, 20, 30, 40, 60, 80, 90],
+    "taus": [2.0, 8.0, 32.0],
+    "reference_tau": 8.0,
+    "train_prompts": 12,
+    "seeds": [42, 43, 44, 45],
+    "k_values": [2, 3, 4]
+  },
+  "manual_n4": {
+    "resampling_steps": [20, 40, 80],
+    "base_temperature": 10.0,
+    "tempering": "increase",
+    "gamma": 0.008
+  },
+  "uniform_explicit_tau": 8.0,
+  "reference_is_measurement_anchor_only": true
+}

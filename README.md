@@ -1,5 +1,8 @@
 # Diffusion test-time alignment reproduction kit
 
+> **Static BFS Graph (SD1.5/TPU/Modal GPU):**
+> [experiment results and reproduction guide](scripts/static_bfs_graph/README.md).
+
 > **T2I Classical Search / BFS vs Soft VASR:** xem
 > [hướng dẫn chạy lại](T2I_REPRODUCE.md) và
 > [kết quả đã hoàn thành](T2I_RESULTS.md). Compact CSV/JSON full precision nằm

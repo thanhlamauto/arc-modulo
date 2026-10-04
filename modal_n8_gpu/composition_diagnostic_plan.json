@@ -1,0 +1,291 @@
+{
+  "DDIM_steps": 100,
+  "GPU": "L40S",
+  "K": 3,
+  "N": 8,
+  "PSP_in_scope": false,
+  "TEST_touched": false,
+  "VALIDATION_touched": false,
+  "backend": "CUDA_Modal",
+  "cost_gate": "run rank 0 then project 20 trajectories at 1.25x its measured duration",
+  "dtype": "bfloat16",
+  "edge_union": [
+    "-1_to_30_tau_8",
+    "-1_to_40_tau_8",
+    "-1_to_60_tau_2",
+    "30_to_40_tau_2",
+    "30_to_80_tau_8",
+    "40_to_60_tau_8",
+    "40_to_90_tau_32",
+    "60_to_80_tau_2",
+    "60_to_90_tau_32",
+    "80_to_90_tau_32",
+    "80_to_90_tau_8",
+    "90_to_100_tau_end"
+  ],
+  "eta": 1.0,
+  "external_100_prompt_pool_touched": false,
+  "max_estimated_gpu_usd": 10.0,
+  "model": "SD1.5",
+  "old_audit_prompt_ids": [
+    0,
+    5,
+    14,
+    27,
+    32,
+    35,
+    36,
+    43,
+    45,
+    47,
+    48,
+    51,
+    54,
+    57,
+    59,
+    62,
+    74,
+    84,
+    87,
+    97
+  ],
+  "old_calibration_prompt_ids": [
+    4,
+    11,
+    15,
+    16,
+    20,
+    21,
+    30,
+    40,
+    49,
+    56,
+    60,
+    65,
+    66,
+    69,
+    73,
+    75,
+    76,
+    79,
+    89,
+    98
+  ],
+  "policies": [
+    {
+      "edge_keys": [
+        "-1_to_60_tau_2",
+        "60_to_80_tau_2",
+        "80_to_90_tau_32",
+        "90_to_100_tau_end"
+      ],
+      "name": "P1",
+      "policy_id": "static_363f51084f81011a",
+      "steps": [
+        60,
+        80,
+        90
+      ],
+      "taus": [
+        2.0,
+        2.0,
+        32.0
+      ]
+    },
+    {
+      "edge_keys": [
+        "-1_to_30_tau_8",
+        "30_to_40_tau_2",
+        "40_to_90_tau_32",
+        "90_to_100_tau_end"
+      ],
+      "name": "P5",
+      "policy_id": "static_937dd840e3b6069f",
+      "steps": [
+        30,
+        40,
+        90
+      ],
+      "taus": [
+        8.0,
+        2.0,
+        32.0
+      ]
+    },
+    {
+      "edge_keys": [
+        "-1_to_30_tau_8",
+        "30_to_80_tau_8",
+        "80_to_90_tau_8",
+        "90_to_100_tau_end"
+      ],
+      "name": "P20",
+      "policy_id": "static_669da784337a0b16",
+      "steps": [
+        30,
+        80,
+        90
+      ],
+      "taus": [
+        8.0,
+        8.0,
+        8.0
+      ]
+    },
+    {
+      "edge_keys": [
+        "-1_to_40_tau_8",
+        "40_to_60_tau_8",
+        "60_to_90_tau_32",
+        "90_to_100_tau_end"
+      ],
+      "name": "TRANSFER4_TO_8",
+      "policy_id": "static_df7ddcbdb5f12bd4",
+      "steps": [
+        40,
+        60,
+        90
+      ],
+      "taus": [
+        8.0,
+        8.0,
+        32.0
+      ]
+    }
+  ],
+  "policy_selection_from_new_rewards": false,
+  "protocol": "STATIC_BFS_N8_COMPOSITION_DIAGNOSTIC_V1",
+  "purpose": "separate edge-estimation noise from additive composition error",
+  "reference_tau": 8.0,
+  "resampling": "ssp",
+  "scoring": "max",
+  "source_audit_plan_sha256": "97ec7724df6d9e8bcf31b5bb0df00c622425c701ea095bb31967f2f936624834",
+  "source_compiled_policy_sha256": "df43b1a03c0b6c3534b44e9392ff12c749c7372e9041b5fa649038097da8e5ce",
+  "source_edge_observations_sha256": "89dc2fb931c242e1ec10037f7ef23eac48172a08fab2b56719a868276ae17d4b",
+  "source_manifest_sha256": "a2e0e98ba072e41d1b9de11da95dc6e80a868dfe7b3fc98177bd7a7d00e3fef2",
+  "source_train_pool_sha256": "8e6042962c702368f57994f461e2a393ed6e20048865c505af32f3100ae75d2b",
+  "trajectories": [
+    {
+      "prompt_id": 39,
+      "prompt_sha256": "b976238d77f716db0cd80e0341ed74ba4617a22ed8cff83732b42deec1c56ae8",
+      "rank": 0,
+      "seed": 42
+    },
+    {
+      "prompt_id": 37,
+      "prompt_sha256": "aef2c93b67e805f3dca2c32255297b0e51332a63ad282469bd9076f861cd30bf",
+      "rank": 1,
+      "seed": 43
+    },
+    {
+      "prompt_id": 18,
+      "prompt_sha256": "ec63ff52eb68d866cd02fbea43b2c86ac023364d91f65cb15577388336dd2dbf",
+      "rank": 2,
+      "seed": 44
+    },
+    {
+      "prompt_id": 85,
+      "prompt_sha256": "4cae85bdae273ce4397a8904d8e8449c61e9858990d71f357f4e0be9105a01dc",
+      "rank": 3,
+      "seed": 45
+    },
+    {
+      "prompt_id": 2,
+      "prompt_sha256": "56085b11929f1a4b49fa2366569fec3b0d2eb6eee318182a6da412c84111ba37",
+      "rank": 4,
+      "seed": 42
+    },
+    {
+      "prompt_id": 41,
+      "prompt_sha256": "1b650080eae2de6106e4bddf11dae5560702b1eccab478a3bc8831f82ed92b44",
+      "rank": 5,
+      "seed": 43
+    },
+    {
+      "prompt_id": 71,
+      "prompt_sha256": "2f6edd71499e503a4f8c3c6359bf5a6df15e3b605b254f26cf503c3a4496546d",
+      "rank": 6,
+      "seed": 44
+    },
+    {
+      "prompt_id": 77,
+      "prompt_sha256": "71900a624e1101eeec171a5a6a814de128e5d2b59e4e23d15da38ed04e0ef208",
+      "rank": 7,
+      "seed": 45
+    },
+    {
+      "prompt_id": 92,
+      "prompt_sha256": "89461176b4819649e2e4684520fdc4ddea2ae03059abc363abe7c08f98aedfef",
+      "rank": 8,
+      "seed": 42
+    },
+    {
+      "prompt_id": 3,
+      "prompt_sha256": "1a5a5b09cca5b11526f0b656ad10c68957ec5efa4a42b98dbeaa1c035659a146",
+      "rank": 9,
+      "seed": 43
+    },
+    {
+      "prompt_id": 99,
+      "prompt_sha256": "f3704b3f0e41f8082ce6b65aa1f3fca5d9ec31346b08335482cdfefc06d7353b",
+      "rank": 10,
+      "seed": 44
+    },
+    {
+      "prompt_id": 68,
+      "prompt_sha256": "205f98f760dbbf5fed68c0ea38d0b1c587fab375d9b71f2962f76c862cf82fae",
+      "rank": 11,
+      "seed": 45
+    },
+    {
+      "prompt_id": 33,
+      "prompt_sha256": "4f261557f2fe06bba4ad848a8772f1af2aa6cfd287c3cd814332eda5821a02b6",
+      "rank": 12,
+      "seed": 42
+    },
+    {
+      "prompt_id": 63,
+      "prompt_sha256": "7f7222776b0751a4a95baf496c91c5aae4ed8e54240f35844d2be0e3b8c37e43",
+      "rank": 13,
+      "seed": 43
+    },
+    {
+      "prompt_id": 80,
+      "prompt_sha256": "cd035792fd9426e10acb2798d133b835636877a91e52496b44772b4d7d843d07",
+      "rank": 14,
+      "seed": 44
+    },
+    {
+      "prompt_id": 19,
+      "prompt_sha256": "861ae0b5f81a98061233bb2369183e1b3be527cefa4e6d2221deee8e74cdf03a",
+      "rank": 15,
+      "seed": 45
+    },
+    {
+      "prompt_id": 29,
+      "prompt_sha256": "9b7a928557d4220a3012374d903fbc9a841fa2b6995eb059b087a3e02e17ae13",
+      "rank": 16,
+      "seed": 42
+    },
+    {
+      "prompt_id": 58,
+      "prompt_sha256": "195c9f0d441a5d653860491b331da1d62fea8f36e467c4f00c4d7a2924079f8a",
+      "rank": 17,
+      "seed": 43
+    },
+    {
+      "prompt_id": 81,
+      "prompt_sha256": "ba06801967533677b1ddfb271f893c64e39c55f784b175eabe82577b42ea683f",
+      "rank": 18,
+      "seed": 44
+    },
+    {
+      "prompt_id": 88,
+      "prompt_sha256": "d5609133b29bf8ed6cbefe518fa910d30b8c3d828587380a344b11daec4beae0",
+      "rank": 19,
+      "seed": 45
+    }
+  ],
+  "verifier": "ImageReward-v1.0",
+  "workspace": "thanhlamtba"
+}
